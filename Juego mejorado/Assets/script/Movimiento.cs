@@ -87,7 +87,7 @@ public class Movimiento : MonoBehaviour
     {
         if (collision.CompareTag("Salida"))
         {
-            Salida.Salir();
+           // Salida.Salir(); igual requiere de otra clase para funcionar
         }
     }
 
