@@ -4,36 +4,36 @@ using UnityEngine;
 
 public class Movimiento : MonoBehaviour
 {
-    public float vel = 5.0f;
-    public float fuerzaSalto = 600;
+    public float velocity = 5.0f;
+    public float jumpForce = 600;
     public float falMultiplier = .05f;
     public float lowMultiplier = 1f;
     public bool betterJump = false;
     public float inputValue;
     //public GameManager Salida; esto es de otra claasse que requiere para funcionar
 
-    public LayerMask capaSuelo;
-    public Transform checkSuelo;
+    public LayerMask layerOfFloor;
+    public Transform checkFloor;
 
-    bool enSuelo;
+    bool onFloor;
 
-    Animator anim;
+    Animator animationn;
 
     Rigidbody2D rigidBody;
 
-    Vector3 escalaPric;
+    Vector3 principalScale;
 
 
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        escalaPric = transform.localScale;
-        anim = GetComponent<Animator>();
+        principalScale = transform.localScale;
+        animationn = GetComponent<Animator>();
     }
 
     public void getInput()
     {
-        inputValue = Input.GetAxis("Horizontal") * vel;
+        inputValue = Input.GetAxis("Horizontal") * velocity;
     }
     public void movePlayer()
     {
@@ -42,32 +42,32 @@ public class Movimiento : MonoBehaviour
 
         if (rigidBody.velocity.x > 0)
         {
-            transform.localScale = escalaPric;
+            transform.localScale = principalScale;
         }
 
         else if (rigidBody.velocity.x < 0)
         {
-            transform.localScale = new Vector3(-escalaPric.x, escalaPric.y, escalaPric.z);
+            transform.localScale = new Vector3(-principalScale.x, principalScale.y, principalScale.z);
         }
     }
     public void animatePlayer()
     {
         if (inputValue != 0)
         {
-            anim.SetBool("Correr", true);
+            animationn.SetBool("Run", true);
         }
         else
         {
-            anim.SetBool("Correr", false);
+            animationn.SetBool("Run", false);
         }
-        anim.SetBool("enSuelo", enSuelo);
+        animationn.SetBool("onFloor", onFloor);
     }
     public void getInputJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && enSuelo)
+        if (Input.GetKeyDown(KeyCode.Space) && onFloor)
         {
-            rigidBody.AddForce(Vector2.up * fuerzaSalto);
-            anim.SetTrigger("Saltar");
+            rigidBody.AddForce(Vector2.up * jumpForce);
+            animationn.SetTrigger("Jump");
         }
     }
     public void jump()
@@ -97,12 +97,12 @@ public class Movimiento : MonoBehaviour
         jump();
         movePlayer();
         animatePlayer();
-        enSuelo = Physics2D.OverlapCircle(checkSuelo.position, 0.1f, capaSuelo);
+        onFloor = Physics2D.OverlapCircle(checkFloor.position, 0.1f, layerOfFloor);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Salida"))
+        if (collision.CompareTag("Exit"))
         {
            // Salida.Salir(); igual requiere de otra clase para funcionar
         }
