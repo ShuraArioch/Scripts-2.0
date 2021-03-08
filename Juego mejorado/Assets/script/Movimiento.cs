@@ -19,14 +19,14 @@ public class Movimiento : MonoBehaviour
 
     Animator anim;
 
-    Rigidbody2D rb;
+    Rigidbody2D rigidBody;
 
     Vector3 escalaPric;
 
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         escalaPric = transform.localScale;
         anim = GetComponent<Animator>();
     }
@@ -38,14 +38,14 @@ public class Movimiento : MonoBehaviour
     public void movePlayer()
     {
         
-        rb.velocity = new Vector2(inputValue, rb.velocity.y);
+        rigidBody.velocity = new Vector2(inputValue, rigidBody.velocity.y);
 
-        if (rb.velocity.x > 0)
+        if (rigidBody.velocity.x > 0)
         {
             transform.localScale = escalaPric;
         }
 
-        else if (rb.velocity.x < 0)
+        else if (rigidBody.velocity.x < 0)
         {
             transform.localScale = new Vector3(-escalaPric.x, escalaPric.y, escalaPric.z);
         }
@@ -66,7 +66,7 @@ public class Movimiento : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && enSuelo)
         {
-            rb.AddForce(Vector2.up * fuerzaSalto);
+            rigidBody.AddForce(Vector2.up * fuerzaSalto);
             anim.SetTrigger("Saltar");
         }
     }
@@ -74,13 +74,13 @@ public class Movimiento : MonoBehaviour
     {
         if (betterJump)
         {
-            if (rb.velocity.y < 0)
+            if (rigidBody.velocity.y < 0)
             {
-                rb.velocity += Vector2.up * Physics2D.gravity.y * (falMultiplier) * Time.deltaTime;
+                rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (falMultiplier) * Time.deltaTime;
             }
-            if (rb.velocity.y > 0 && !Input.GetKey("space"))
+            if (rigidBody.velocity.y > 0 && !Input.GetKey("space"))
             {
-                rb.velocity += Vector2.up * Physics2D.gravity.y * (lowMultiplier) * Time.deltaTime;
+                rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (lowMultiplier) * Time.deltaTime;
             }
         }
     }
