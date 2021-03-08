@@ -9,6 +9,7 @@ public class Movimiento : MonoBehaviour
     public float falMultiplier = .05f;
     public float lowMultiplier = 1f;
     public bool betterJump = false;
+    public float inputValue;
     //public GameManager Salida; esto es de otra claasse que requiere para funcionar
 
     public LayerMask capaSuelo;
@@ -30,10 +31,14 @@ public class Movimiento : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    private void Update()
+    public void getInput()
     {
-        float h = Input.GetAxis("Horizontal") * vel;
-        rb.velocity = new Vector2(h, rb.velocity.y);
+        inputValue = Input.GetAxis("Horizontal") * vel;
+    }
+    public void movePlayer()
+    {
+        
+        rb.velocity = new Vector2(inputValue, rb.velocity.y);
 
         if (rb.velocity.x > 0)
         {
@@ -44,10 +49,10 @@ public class Movimiento : MonoBehaviour
         {
             transform.localScale = new Vector3(-escalaPric.x, escalaPric.y, escalaPric.z);
         }
-
-        //Animation
-
-        if (h != 0)
+    }
+    public void animatePlayer()
+    {
+        if (inputValue != 0)
         {
             anim.SetBool("Correr", true);
         }
@@ -56,7 +61,11 @@ public class Movimiento : MonoBehaviour
             anim.SetBool("Correr", false);
         }
         anim.SetBool("enSuelo", enSuelo);
-
+    }
+    private void Update()
+    {
+   
+        getInput();
 
         if (Input.GetKeyDown(KeyCode.Space) && enSuelo)
         {
@@ -79,7 +88,10 @@ public class Movimiento : MonoBehaviour
     }
 
     private void FixedUpdate()
+
     {
+        movePlayer();
+        animatePlayer();
         enSuelo = Physics2D.OverlapCircle(checkSuelo.position, 0.1f, capaSuelo);
     }
 
