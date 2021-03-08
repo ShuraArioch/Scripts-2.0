@@ -9,7 +9,7 @@ public class Movimiento : MonoBehaviour
     public float falMultiplier = .05f;
     public float lowMultiplier = 1f;
     public bool betterJump = false;
-    public GameManager Salida; 
+    //public GameManager Salida; esto es de otra claasse que requiere para funcionar
 
     public LayerMask capaSuelo;
     public Transform checkSuelo;
