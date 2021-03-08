@@ -62,18 +62,16 @@ public class Movimiento : MonoBehaviour
         }
         anim.SetBool("enSuelo", enSuelo);
     }
-    private void Update()
+    public void getInputJump()
     {
-   
-        getInput();
-
         if (Input.GetKeyDown(KeyCode.Space) && enSuelo)
         {
             rb.AddForce(Vector2.up * fuerzaSalto);
             anim.SetTrigger("Saltar");
         }
-
-        //mejora de salto
+    }
+    public void jump()
+    {
         if (betterJump)
         {
             if (rb.velocity.y < 0)
@@ -86,10 +84,17 @@ public class Movimiento : MonoBehaviour
             }
         }
     }
+    private void Update() 
+    {
+        getInputJump();
+        getInput();
+
+    }
 
     private void FixedUpdate()
 
     {
+        jump();
         movePlayer();
         animatePlayer();
         enSuelo = Physics2D.OverlapCircle(checkSuelo.position, 0.1f, capaSuelo);
